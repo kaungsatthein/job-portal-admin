@@ -1,7 +1,5 @@
-import React from "react";
-
-const page = () => {
-  return <div>page</div>;
+const DashboardPage = () => {
+  return <div className="p-3">DashboardPage</div>;
 };
 
-export default page;
+export default DashboardPage;

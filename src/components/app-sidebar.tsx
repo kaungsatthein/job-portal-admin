@@ -1,4 +1,11 @@
-import { Calendar, Home, Inbox, LogOut, Search, Settings } from "lucide-react";
+import {
+  Workflow,
+  Briefcase,
+  Building2,
+  FileText,
+  LogOut,
+  Users,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -6,47 +13,59 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 
-// Menu items.
 const items = [
   {
-    title: "Home",
-    url: "home",
-    icon: Home,
+    title: "Application",
+    url: "/application",
+    icon: FileText,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
+    title: "Company",
+    url: "/company",
+    icon: Building2,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
+    title: "Industry",
+    url: "/industry",
+    icon: Workflow,
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
+    title: "Job Posting",
+    url: "/job-posting",
+    icon: Briefcase,
   },
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "User",
+    url: "/user",
+    icon: Users,
   },
 ];
 
 export function AppSidebar() {
   return (
     <Sidebar>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href="#">
+                {/* <IconInnerShadowTop className="!size-5" /> */}
+                <span className="text-base font-semibold">HireHub Portal</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          {/* <SidebarGroupLabel>HireHub Portal</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
