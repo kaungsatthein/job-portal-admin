@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import {
-  ApiResponse,
   Industry,
   IndustryPayload,
   createIndustry,
@@ -9,6 +8,7 @@ import {
   getIndustries,
   updateIndustry,
 } from "../services/industry";
+import { ApiResponse } from "../types";
 
 interface ApiErrorResponse {
   message?: string;

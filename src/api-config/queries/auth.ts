@@ -3,6 +3,7 @@ import type { AxiosError, AxiosResponse } from "axios";
 import { logout, googleLogin, login } from "../services/auth";
 import type { AuthTokens, LoginPayload } from "../services/auth";
 import { removeCookieStore } from "@/helper/store";
+import { USER_PROFILE_STORAGE_KEY } from "@/lib/constants";
 
 export function useGoogleLogin() {
   return useMutation({
@@ -52,6 +53,9 @@ export const useLogout = () => {
     onSuccess: () => {
       removeCookieStore(process.env.NEXT_PUBLIC_USER_ACCESS_TOKEN as string);
       removeCookieStore(process.env.NEXT_PUBLIC_USER_REFRESH_TOKEN as string);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(USER_PROFILE_STORAGE_KEY);
+      }
     },
     onError: (error: any) => {
       console.error("Logout failed:", error);

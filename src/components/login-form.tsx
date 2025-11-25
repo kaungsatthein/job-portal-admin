@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { USER_PROFILE_STORAGE_KEY } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useLogin } from "@/api-config/queries/auth";
 import type { LoginPayload } from "@/api-config/services/auth";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
@@ -38,10 +40,25 @@ export function LoginForm({
     formState: { errors },
   } = methods;
 
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<LoginPayload> = async (data) => {
     try {
       const res = await login(data);
-      console.log("res :>> ", res);
+      if (res.status >= 200 && res.status < 300) {
+        if (typeof window !== "undefined") {
+          const profileFromResponse = res.data?.user;
+          const profile = {
+            name: profileFromResponse?.name || data.email.split("@")[0],
+            email: profileFromResponse?.email || data.email,
+          };
+          localStorage.setItem(
+            USER_PROFILE_STORAGE_KEY,
+            JSON.stringify(profile)
+          );
+        }
+        router.push("/");
+      }
     } catch (err) {
       console.error("Login failed:", err);
     }

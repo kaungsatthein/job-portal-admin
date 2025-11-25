@@ -1,4 +1,5 @@
 import apiInstance from "../instance";
+import { ApiResponse } from "../types";
 
 export interface IndustryCompany {
   id: string;
@@ -18,13 +19,6 @@ export interface Industry {
 
 export interface IndustryPayload {
   name: string;
-}
-
-export interface ApiResponse<T> {
-  statusCode: number;
-  message: string;
-  data: T;
-  timestamp: string;
 }
 
 const INDUSTRY_BASE_PATH = "/industry";

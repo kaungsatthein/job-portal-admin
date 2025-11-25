@@ -35,19 +35,19 @@ export const industryColumns: ColumnDef<Industry>[] = [
       );
     },
   },
-  {
-    accessorKey: "companies",
-    header: ({ column }) => {
-      return <ColumnHeader column={column} title="Company Name" />;
-    },
-    cell: ({ row }) => {
-      return (
-        <p className="text-primary text-center">
-          {row.original.companies?.map((company) => company.name)}
-        </p>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "companies",
+  //   header: ({ column }) => {
+  //     return <ColumnHeader column={column} title="Company Name" />;
+  //   },
+  //   cell: ({ row }) => {
+  //     return (
+  //       <p className="text-primary text-center">
+  //         {row.original.companies?.map((company) => company.name)}
+  //       </p>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "status",
     header: ({ column }) => {

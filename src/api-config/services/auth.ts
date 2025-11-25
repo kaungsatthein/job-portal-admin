@@ -6,8 +6,14 @@ export interface LoginPayload {
 }
 
 export interface AuthTokens {
-  accessToken: string;
+  accessToken?: string;
   refreshToken?: string;
+  user?: {
+    id?: string;
+    name?: string;
+    email?: string;
+    [key: string]: unknown;
+  };
   [key: string]: unknown;
 }
 
