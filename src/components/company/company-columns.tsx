@@ -64,7 +64,7 @@ export const companyColumns: ColumnDef<Company>[] = [
       return <ColumnHeader column={column} title="Status" />;
     },
     cell: ({ row }) => {
-      return <CompanyStatus company={row.original} />;
+      return <CompanyStatus key={row.original.id} company={row.original} />;
     },
   },
   {

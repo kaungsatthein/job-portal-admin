@@ -29,7 +29,7 @@ export const CompanyStatus = ({ company }: CompanyStatusProps) => {
 
   useEffect(() => {
     setStatus(company.status);
-  }, [company.status]);
+  }, [company.id, company.status]);
 
   const handleStatusChange = async (nextStatus: string) => {
     if (nextStatus === status) {
