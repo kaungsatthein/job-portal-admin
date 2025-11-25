@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import { toast } from "sonner";
 import { ApiResponse } from "../types";
 import {
   Company,
@@ -8,12 +9,7 @@ import {
   getCompanies,
   updateCompany,
 } from "../services/company";
-
-interface ApiErrorResponse {
-  message?: string;
-  error?: string;
-  [key: string]: unknown;
-}
+import { ApiErrorResponse, getApiErrorMessage } from "@/lib/api-error";
 
 export const companyKeys = {
   all: ["companies"] as const,
@@ -42,6 +38,10 @@ export const useDeleteCompany = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: companyKeys.all });
+      toast.success("Company deleted successfully.");
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, "Failed to delete company."));
     },
   });
 };
@@ -64,6 +64,10 @@ export const useUpdateCompany = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: companyKeys.all });
+      toast.success("Company status updated.");
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, "Failed to update company."));
     },
   });
 };

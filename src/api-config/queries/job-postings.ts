@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import { toast } from "sonner";
 import { ApiResponse } from "../types";
 import {
   JobPosting,
@@ -8,12 +9,7 @@ import {
   getJobPostings,
   updateJobPosting,
 } from "../services/job-postings";
-
-interface ApiErrorResponse {
-  message?: string;
-  error?: string;
-  [key: string]: unknown;
-}
+import { ApiErrorResponse, getApiErrorMessage } from "@/lib/api-error";
 
 export const jobPostingKeys = {
   all: ["job-postings"] as const,
@@ -42,6 +38,10 @@ export const useDeleteJobPosting = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: jobPostingKeys.all });
+      toast.success("Job posting deleted successfully.");
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, "Failed to delete job posting."));
     },
   });
 };
@@ -64,6 +64,10 @@ export const useUpdateJobPosting = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: jobPostingKeys.all });
+      toast.success("Job status updated.");
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, "Failed to update job status."));
     },
   });
 };

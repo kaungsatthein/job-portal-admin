@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
+import { toast } from "sonner";
 import {
   Industry,
   IndustryPayload,
@@ -9,12 +10,7 @@ import {
   updateIndustry,
 } from "../services/industry";
 import { ApiResponse } from "../types";
-
-interface ApiErrorResponse {
-  message?: string;
-  error?: string;
-  [key: string]: unknown;
-}
+import { ApiErrorResponse, getApiErrorMessage } from "@/lib/api-error";
 
 export const industryKeys = {
   all: ["industries"] as const,
@@ -44,6 +40,10 @@ export const useCreateIndustry = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: industryKeys.all });
+      toast.success("Industry created successfully.");
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, "Failed to create industry."));
     },
   });
 };
@@ -67,6 +67,10 @@ export const useUpdateIndustry = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: industryKeys.all });
       queryClient.invalidateQueries({ queryKey: industryKeys.detail(variables.industryId) });
+      toast.success("Industry updated successfully.");
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, "Failed to update industry."));
     },
   });
 };
@@ -84,6 +88,10 @@ export const useDeleteIndustry = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: industryKeys.all });
+      toast.success("Industry deleted successfully.");
+    },
+    onError: (error) => {
+      toast.error(getApiErrorMessage(error, "Failed to delete industry."));
     },
   });
 };

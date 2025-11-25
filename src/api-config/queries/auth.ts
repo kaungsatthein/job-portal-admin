@@ -1,10 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import type { AxiosError, AxiosResponse } from "axios";
+import { toast } from "sonner";
 import { logout, googleLogin, login } from "../services/auth";
 import type { AuthTokens, LoginPayload } from "../services/auth";
 import { removeCookieStore } from "@/helper/store";
 import { USER_PROFILE_STORAGE_KEY } from "@/lib/constants";
 import { ApiResponse } from "../types";
+import { ApiErrorResponse, getApiErrorMessage } from "@/lib/api-error";
 
 export function useGoogleLogin() {
   return useMutation({
@@ -22,12 +24,6 @@ export function useGoogleLogin() {
       console.error("Google login failed:", error);
     },
   });
-}
-
-interface ApiErrorResponse {
-  message?: string;
-  error?: string;
-  [key: string]: unknown;
 }
 
 const ACCESS_TOKEN_KEY = process.env.NEXT_PUBLIC_USER_ACCESS_TOKEN;
@@ -61,10 +57,6 @@ export function useLogin() {
 
       setBrowserCookie(ACCESS_TOKEN_KEY, tokens.accessToken, ACCESS_TOKEN_MAX_AGE);
       setBrowserCookie(REFRESH_TOKEN_KEY, tokens.refreshToken, REFRESH_TOKEN_MAX_AGE);
-
-      if (typeof window !== "undefined") {
-        window.location.href = "/";
-      }
     },
     onError: (error) => {
       console.error("Login failed:", error);
@@ -81,9 +73,12 @@ export const useLogout = () => {
       if (typeof window !== "undefined") {
         localStorage.removeItem(USER_PROFILE_STORAGE_KEY);
       }
+      toast.success("Logged out successfully.");
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ApiErrorResponse>) => {
       console.error("Logout failed:", error);
+      const message = getApiErrorMessage(error, "Failed to logout.");
+      toast.error(message);
     },
   });
 };

@@ -20,12 +20,17 @@ import { Input } from "@/components/ui/input";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useLogin } from "@/api-config/queries/auth";
 import type { LoginPayload } from "@/api-config/services/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { getApiErrorMessage, type ApiErrorResponse } from "@/lib/api-error";
+import type { AxiosError } from "axios";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const { mutateAsync: login, isPending, error } = useLogin();
+  const router = useRouter();
   const methods = useForm<LoginPayload>({
     defaultValues: {
       email: "",
@@ -55,16 +60,22 @@ export function LoginForm({
             JSON.stringify(profile)
           );
         }
+        toast.success("Login successful.");
+        router.replace("/");
       }
     } catch (err) {
       console.error("Login failed:", err);
+      const message = getApiErrorMessage(
+        err as AxiosError<ApiErrorResponse>,
+        "Unable to login. Please try again."
+      );
+      toast.error(message);
     }
   };
 
-  const loginErrorMessage = (() => {
-    if (!error) return null;
-    return error.response?.data?.message ?? error.message ?? "Unable to login.";
-  })();
+  const loginErrorMessage = error
+    ? getApiErrorMessage(error, "Unable to login.")
+    : null;
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
