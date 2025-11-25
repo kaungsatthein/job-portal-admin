@@ -22,6 +22,9 @@ import { useIndustries } from "@/api-config/queries/industry";
 import { useJobPostings } from "@/api-config/queries/job-postings";
 import { useUsers } from "@/api-config/queries/user";
 import { getApiErrorMessage } from "@/lib/api-error";
+import type { Company } from "@/api-config/services/company";
+import type { Industry } from "@/api-config/services/industry";
+import type { JobPosting } from "@/api-config/services/job-postings";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
 
@@ -29,6 +32,22 @@ const formatPercentage = (value: number, total: number) => {
   if (!total) return "0%";
   const percent = Math.round((value / total) * 100);
   return `${percent}%`;
+};
+
+const toArray = <T,>(value: unknown): T[] => {
+  if (Array.isArray(value)) {
+    return value as T[];
+  }
+
+  if (
+    value &&
+    typeof value === "object" &&
+    Array.isArray((value as { data?: unknown }).data)
+  ) {
+    return ((value as { data: T[] }).data) ?? [];
+  }
+
+  return [];
 };
 
 const DashboardPage = () => {
@@ -57,9 +76,9 @@ const DashboardPage = () => {
     error: usersErrorDetails,
   } = useUsers({ page: 1, limit: 100 });
 
-  const companies = companyResponse?.data ?? [];
-  const industries = industryResponse?.data ?? [];
-  const jobPostings = jobResponse?.data ?? [];
+  const companies = toArray<Company>(companyResponse?.data);
+  const industries = toArray<Industry>(industryResponse?.data);
+  const jobPostings = toArray<JobPosting>(jobResponse?.data);
   const usersPayload = userResponse?.data;
   const users = usersPayload?.data ?? [];
   const totalUsers = usersPayload?.pagination?.total ?? users.length;

@@ -13,7 +13,7 @@ import { useUpdateCompany } from "@/api-config/queries/company";
 
 const statusOptions = [
   { value: "open", label: "Open" },
-  { value: "close", label: "Close" },
+  { value: "closed", label: "Closed" },
   { value: "pending", label: "Pending" },
 ];
 

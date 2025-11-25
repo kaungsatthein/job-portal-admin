@@ -8,6 +8,23 @@ import { SearchInput } from "@/components/ui/search-input";
 import { DataTable } from "@/components/data-table";
 import { jobPostingColumns } from "@/components/job/job-posting-columns";
 import { useJobPostings } from "@/api-config/queries/job-postings";
+import type { JobPosting } from "@/api-config/services/job-postings";
+
+const normalizeJobPostings = (payload: unknown): JobPosting[] => {
+  if (Array.isArray(payload)) {
+    return payload as JobPosting[];
+  }
+
+  if (
+    payload &&
+    typeof payload === "object" &&
+    Array.isArray((payload as { data?: unknown }).data)
+  ) {
+    return ((payload as { data: JobPosting[] }).data) ?? [];
+  }
+
+  return [];
+};
 
 const Job = () => {
   const { data, isPending, isError, error } = useJobPostings();
@@ -19,7 +36,7 @@ const Job = () => {
     setSearchTerm(searchInput.trim().toLowerCase());
   };
 
-  const jobPostings = data?.data ?? [];
+  const jobPostings = normalizeJobPostings(data?.data);
 
   const filteredJobPostings = useMemo(() => {
     if (!searchTerm) return jobPostings;

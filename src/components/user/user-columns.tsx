@@ -5,9 +5,10 @@ import { ColumnHeader } from "../column-header";
 import { User } from "@/api-config/services/user";
 import { UserStatus } from "./user-status";
 
-const formatLabel = (value?: string | null) => {
-  if (!value) return "-";
-  return value
+const formatLabel = (value?: string | null | number) => {
+  if (value === null || value === undefined || value === "") return "-";
+  const normalized = typeof value === "string" ? value : String(value);
+  return normalized
     .replace(/[_-]/g, " ")
     .split(" ")
     .filter(Boolean)
