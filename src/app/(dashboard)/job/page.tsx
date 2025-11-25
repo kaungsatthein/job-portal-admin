@@ -1,12 +1,12 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, RefreshCcw } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/ui/search-input";
 import { DataTable } from "@/components/data-table";
-import { jobPostingColumns } from "@/components/job-posting-columns";
+import { jobPostingColumns } from "@/components/job/job-posting-columns";
 import { useJobPostings } from "@/api-config/queries/job-postings";
 
 const Job = () => {
@@ -32,9 +32,7 @@ const Job = () => {
         posting.status,
       ];
 
-      return tokens.some((token) =>
-        token?.toLowerCase().includes(searchTerm)
-      );
+      return tokens.some((token) => token?.toLowerCase().includes(searchTerm));
     });
   }, [jobPostings, searchTerm]);
 
@@ -59,6 +57,10 @@ const Job = () => {
         />
         <Button className="ml-2" type="submit" disabled={isPending}>
           Search
+        </Button>
+        <Button variant="outline" onClick={() => setSearchInput("")}>
+          <RefreshCcw />
+          <span>Reset</span>
         </Button>
       </form>
 

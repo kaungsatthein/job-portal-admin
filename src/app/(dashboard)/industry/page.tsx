@@ -20,9 +20,9 @@ import {
 } from "@/components/ui/dialog";
 import { Card } from "@/components/ui/card";
 import { SearchInput } from "@/components/ui/search-input";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, RefreshCcw } from "lucide-react";
 import { DataTable } from "@/components/data-table";
-import { industryColumns } from "@/components/industry-column";
+import { industryColumns } from "@/components/industry/industry-column";
 
 const Industry = () => {
   const { data, isPending, isError, error } = useIndustries();
@@ -130,6 +130,10 @@ const Industry = () => {
           />
           <Button className="ml-2" type="submit" disabled={isPending}>
             Search
+          </Button>
+          <Button variant="outline" onClick={() => setSearchInput("")}>
+            <RefreshCcw />
+            <span>Reset</span>
           </Button>
         </form>
       </div>

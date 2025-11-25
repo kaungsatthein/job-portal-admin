@@ -1,79 +1,22 @@
 "use client";
-
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { ColumnDef } from "@tanstack/react-table";
-import { ColumnHeader } from "./column-header";
-import { Industry } from "@/api-config/services/industry";
-import { Button } from "./ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Loader2, Edit, MoreHorizontal, Trash2 } from "lucide-react";
 import {
   useDeleteIndustry,
   useUpdateIndustry,
 } from "@/api-config/queries/industry";
-
-export const industryColumns: ColumnDef<Industry>[] = [
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return <ColumnHeader column={column} title="Name" />;
-    },
-    cell: ({ row }) => {
-      return (
-        <p className="text-primary hover:text-primary-600 text-sm text-center">
-          {row.original.name}
-        </p>
-      );
-    },
-  },
-  // {
-  //   accessorKey: "companies",
-  //   header: ({ column }) => {
-  //     return <ColumnHeader column={column} title="Company Name" />;
-  //   },
-  //   cell: ({ row }) => {
-  //     return (
-  //       <p className="text-primary text-center">
-  //         {row.original.companies?.map((company) => company.name)}
-  //       </p>
-  //     );
-  //   },
-  // },
-  {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return <ColumnHeader column={column} title="Contract Status" />;
-    },
-    cell: ({ row: { original } }) => {
-      return <p className="text-center">active</p>;
-    },
-  },
-
-  {
-    accessorKey: "action",
-    header: ({ column }) => {
-      return <ColumnHeader column={column} title="Action" />;
-    },
-    cell: ({ row }) => {
-      return <IndustryActions industry={row.original} />;
-    },
-  },
-];
+import { Industry } from "@/api-config/services/industry";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { Button } from "../ui/button";
+import { Edit, Loader2, MoreHorizontal, Trash2 } from "lucide-react";
+import { Dialog, DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { DialogContent, DialogFooter, DialogHeader } from "../ui/dialog";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "../ui/input";
 
 interface IndustryActionsProps {
   industry: Industry;
 }
 
-const IndustryActions = ({ industry }: IndustryActionsProps) => {
+export const IndustryActions = ({ industry }: IndustryActionsProps) => {
   const [open, setOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [name, setName] = useState(industry.name);

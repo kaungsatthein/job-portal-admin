@@ -1,8 +1,10 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ColumnHeader } from "./column-header";
+import { ColumnHeader } from "../column-header";
 import { JobPosting } from "@/api-config/services/job-postings";
+import { JobPostingActions } from "./job-posting-actions";
+import { JobPostingStatus } from "./job-posting-status";
 
 const formatLabel = (value?: string) => {
   if (!value) return "-";
@@ -28,7 +30,9 @@ export const jobPostingColumns: ColumnDef<JobPosting>[] = [
       return <ColumnHeader column={column} title="Title" />;
     },
     cell: ({ row }) => {
-      return <p className="text-sm font-medium">{row.original.title}</p>;
+      return (
+        <p className="text-sm text-center font-medium">{row.original.title}</p>
+      );
     },
   },
   {
@@ -73,9 +77,7 @@ export const jobPostingColumns: ColumnDef<JobPosting>[] = [
     },
     cell: ({ row }) => {
       return (
-        <p className="text-center text-sm">
-          {row.original.salaryRange || "-"}
-        </p>
+        <p className="text-center text-sm">{row.original.salaryRange || "-"}</p>
       );
     },
   },
@@ -85,11 +87,7 @@ export const jobPostingColumns: ColumnDef<JobPosting>[] = [
       return <ColumnHeader column={column} title="Status" />;
     },
     cell: ({ row }) => {
-      return (
-        <p className="text-center text-sm">
-          {formatLabel(String(row.original.status))}
-        </p>
-      );
+      return <JobPostingStatus jobPosting={row.original} />;
     },
   },
   {
@@ -103,6 +101,15 @@ export const jobPostingColumns: ColumnDef<JobPosting>[] = [
           {formatDate(row.original.createdAt)}
         </p>
       );
+    },
+  },
+  {
+    id: "action",
+    header: ({ column }) => {
+      return <ColumnHeader column={column} title="Action" />;
+    },
+    cell: ({ row }) => {
+      return <JobPostingActions jobPosting={row.original} />;
     },
   },
 ];

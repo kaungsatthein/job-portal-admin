@@ -20,7 +20,6 @@ export function SearchInput({ className, ...props }: SearchInputProps) {
         placeholder="Search..."
         {...props}
       />
-      {/* <Button className="ml-2">Search</Button> */}
     </div>
   );
 }

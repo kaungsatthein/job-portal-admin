@@ -1,7 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import { ApiResponse } from "../types";
-import { JobPosting, getJobPostings } from "../services/job-postings";
+import {
+  JobPosting,
+  JobPostingPayload,
+  deleteJobPosting,
+  getJobPostings,
+  updateJobPosting,
+} from "../services/job-postings";
 
 interface ApiErrorResponse {
   message?: string;
@@ -19,6 +25,45 @@ export const useJobPostings = () => {
     queryFn: async () => {
       const response = await getJobPostings();
       return response.data;
+    },
+  });
+};
+
+export const useDeleteJobPosting = () => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    ApiResponse<{ id: string } | null>,
+    AxiosError<ApiErrorResponse>,
+    string
+  >({
+    mutationFn: async (jobPostingId) => {
+      const response = await deleteJobPosting(jobPostingId);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: jobPostingKeys.all });
+    },
+  });
+};
+
+interface UpdateJobPostingInput {
+  jobPostingId: string;
+  payload: Partial<JobPostingPayload>;
+}
+
+export const useUpdateJobPosting = () => {
+  const queryClient = useQueryClient();
+  return useMutation<
+    ApiResponse<JobPosting>,
+    AxiosError<ApiErrorResponse>,
+    UpdateJobPostingInput
+  >({
+    mutationFn: async ({ jobPostingId, payload }) => {
+      const response = await updateJobPosting(jobPostingId, payload);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: jobPostingKeys.all });
     },
   });
 };

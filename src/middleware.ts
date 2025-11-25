@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
-  // const token = req.cookies.get("token")?.value;
-  const { pathname } = req.nextUrl;
+const AUTH = process.env.NEXT_PUBLIC_USER_ACCESS_TOKEN || "token";
 
-  const token = "12345678";
+export function middleware(req: NextRequest) {
+  const token = req.cookies.get(AUTH)?.value;
+  const { pathname } = req.nextUrl;
 
   console.log("Middleware - Path:", pathname, "Token exists:", !!token);
 

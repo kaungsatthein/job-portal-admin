@@ -1,4 +1,5 @@
 import apiInstance from "../instance";
+import { ApiResponse } from "../types";
 
 export interface LoginPayload {
   email: string;
@@ -6,8 +7,11 @@ export interface LoginPayload {
 }
 
 export interface AuthTokens {
-  accessToken?: string;
-  refreshToken?: string;
+  message?: string;
+  tokens?: {
+    accessToken?: string;
+    refreshToken?: string;
+  };
   user?: {
     id?: string;
     name?: string;
@@ -22,7 +26,7 @@ export async function googleLogin() {
 }
 
 export async function login(payload: LoginPayload) {
-  return apiInstance.post<AuthTokens>("/auth/login", payload);
+  return apiInstance.post<ApiResponse<AuthTokens>>("/auth/login", payload);
 }
 
 export async function logout() {
