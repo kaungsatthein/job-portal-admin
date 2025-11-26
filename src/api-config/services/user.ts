@@ -7,6 +7,7 @@ export interface User {
   passwordHash: string | null;
   name: string;
   role: string;
+  loginCount: number;
   companyId: string | null;
   resumeUrl: string | null;
   birthDate: string | null;

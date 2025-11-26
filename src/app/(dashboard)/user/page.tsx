@@ -101,6 +101,8 @@ const UserPage = () => {
   const total = pagination?.total ?? 0;
   const isTableLoading = isPending || isFetching;
 
+  console.log("users :>> ", users);
+
   const errorMessage = error?.response?.data?.message || error?.message || null;
 
   return (

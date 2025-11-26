@@ -76,6 +76,16 @@ export const userColumns: ColumnDef<User>[] = [
     },
   },
   {
+    accessorKey: "loginCount",
+    header: ({ column }) => {
+      return <ColumnHeader column={column} title="Logins" />;
+    },
+    cell: ({ row }) => {
+      const count = row.original.loginCount;
+      return <p className="text-center text-sm">{count ?? "-"}</p>;
+    },
+  },
+  {
     id: "emailVerified",
     header: ({ column }) => {
       return <ColumnHeader column={column} title="Verified" />;
