@@ -63,11 +63,6 @@ const getInitials = (name?: string, email?: string) => {
 
 const items = [
   {
-    title: "Application",
-    url: "/application",
-    icon: FileText,
-  },
-  {
     title: "Company",
     url: "/company",
     icon: Building2,

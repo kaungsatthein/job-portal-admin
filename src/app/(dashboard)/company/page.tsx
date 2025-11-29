@@ -21,6 +21,7 @@ const Company = () => {
 
   const companies = data?.data ?? [];
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const filteredCompanies = useMemo(() => {
     if (!searchTerm) {
       return companies;
@@ -38,6 +39,7 @@ const Company = () => {
     });
   }, [companies, searchTerm]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const errorMessage =
     (error as any)?.response?.data?.message || error?.message || null;
 

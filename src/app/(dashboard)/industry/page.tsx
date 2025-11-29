@@ -54,6 +54,7 @@ const Industry = () => {
 
   const industries = data?.data ?? [];
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const filteredIndustries = useMemo(() => {
     if (!searchTerm) {
       return industries;

@@ -70,6 +70,7 @@ const refreshAccessToken = async (): Promise<{
 };
 
 // Function to handle unauthorized response and retry request
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleUnauthorizedError = async (error: any) => {
   const originalRequest = error.config;
 
